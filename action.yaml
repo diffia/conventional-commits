@@ -1,5 +1,5 @@
 name: 'codehabits/conventional-commits'
-description: 'Require commits and PR titles to follow https://www.conventionalcommits.org/'
+description: 'Require commits and PR titles to follow https://www.conventionalcommits.org'
 runs:
   using: 'node16'
-  main: 'dist/index.js'
+  main: 'index.js'
