@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/codehabits/conventional-commits#readme",
   "devDependencies": {
+    "@types/node": "^18.11.0",
     "typescript": "^4.8.4"
   },
   "dependencies": {
