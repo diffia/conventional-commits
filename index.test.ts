@@ -7,7 +7,7 @@ jest.mock('@actions/core');
 test("should handle conventional commits",() => {
     const commits = [
         { message: 'fix: foo' },
-        { message: 'chore: foo' }
+        { message: 'chore: foo' },
     ]
     validateCommits(commits)
 })
@@ -45,3 +45,12 @@ test("should only pass on first line to core.info when ignoring", () => {
     validateCommits([{message: 'Merge something\nfoo\nbar'}])
     expect(core.info).toHaveBeenCalledWith("🤫 Ignoring 'Merge something'")
 })
+
+test("should report error on unconventional messages",() => {
+    const commits = [
+        { message: 'Repair and update database by default in development' }
+    ]
+    validateCommits(commits)
+    expect(core.error).toHaveBeenCalledWith("❌ Repair and update database by default in development")
+})
+
