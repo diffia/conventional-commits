@@ -46,6 +46,16 @@ test("should only pass on first line to core.info when ignoring", () => {
     expect(core.info).toHaveBeenCalledWith("🤫 Ignoring 'Merge something'")
 })
 
+test("should not ignore messages that has 'merge' somewhere in their body", () => {
+    validateCommits([{message: 'fix: something\nfoo\nbar merge merge MERGE'}])
+    expect(core.info).toHaveBeenCalledWith("✅ fix: something")
+})
+
+test("should only output the first line of a commit message", () => {
+    validateCommits([{message: 'fix: something\nfoo\nbar'}])
+    expect(core.info).toHaveBeenCalledWith("✅ fix: something")
+})
+
 test("should report error on unconventional messages",() => {
     const commits = [
         { message: 'Repair and update database by default in development' }

@@ -37,21 +37,22 @@ function validatePullRequest(event) {
         validateCommits(commits);
     });
 }
-function ignore(commit) {
-    return commit.message.match(/merge/i);
+function ignore(message) {
+    return message.match(/merge/i);
 }
 function validateCommits(commits) {
     commits.forEach((commit) => {
-        if (ignore(commit)) {
-            core.info(`🤫 Ignoring '${commit.message.split('\n')[0]}'`);
+        const firstLine = commit.message.split('\n')[0];
+        if (ignore(firstLine)) {
+            core.info(`🤫 Ignoring '${firstLine}'`);
             return;
         }
         try {
-            (0, parser_1.parser)(commit.message);
-            core.info(`✅ ${commit.message}`);
+            (0, parser_1.parser)(firstLine);
+            core.info(`✅ ${firstLine}`);
         }
         catch (error) {
-            core.error(`❌ ${commit.message}`);
+            core.error(`❌ ${firstLine}`);
             core.setFailed(error);
         }
     });

@@ -30,22 +30,23 @@ async function validatePullRequest(event: PullRequestEvent) {
     validateCommits(commits)
 }
 
-function ignore(commit:WithMessage){
-    return commit.message.match(/merge/i)
+function ignore(message){
+    return message.match(/merge/i)
 }
 
 export function validateCommits(commits: WithMessage[]) {
     commits.forEach((commit) => {
-        if(ignore(commit)){
-            core.info(`🤫 Ignoring '${commit.message.split('\n')[0]}'`)
+        const firstLine = commit.message.split('\n')[0]
+        if(ignore(firstLine)){
+            core.info(`🤫 Ignoring '${firstLine}'`)
             return
         }
 
         try {
-            parser(commit.message)
-            core.info(`✅ ${commit.message}`)
+            parser(firstLine)
+            core.info(`✅ ${firstLine}`)
         } catch (error) {
-            core.error(`❌ ${commit.message}`)
+            core.error(`❌ ${firstLine}`)
             core.setFailed(error as Error)
         }
     })
