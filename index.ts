@@ -1,8 +1,12 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import { parser } from '@conventional-commits/parser'
+
 import { Commit, PullRequestEvent, PushEvent } from '@octokit/webhooks-definitions/schema'
+
 import { env } from 'process'
+import { parser } from '@conventional-commits/parser'
+
+type WithMessage = Pick<Commit, 'message'>
 
 async function run() {
     core.info('🤨 Validating conventional commits')
@@ -26,14 +30,14 @@ async function validatePullRequest(event: PullRequestEvent) {
     validateCommits(commits)
 }
 
-function ignore(commit:Commit){
+function ignore(commit:WithMessage){
     return commit.message.match(/merge/i)
 }
 
-function validateCommits(commits: Commit[]) {
+export function validateCommits(commits: WithMessage[]) {
     commits.forEach((commit) => {
         if(ignore(commit)){
-            core.info(`🤫 Ignoring '${commit.message}'`)
+            core.info(`🤫 Ignoring '${commit.message.split('\n')[0]}'`)
             return
         }
 
