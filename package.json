@@ -1,14 +1,16 @@
 {
   "name": "conventional-commits",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "Github action that enforces conventional commits",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
     "pre:test": "tsc",
     "test": "jest",
-    "test-build": "npm run build && node index.js",
-    "start": "tsc --watch & jest --watch"
+    "test-build": "npm test && node index.js",
+    "start": "tsc --watch & jest --watch",
+    "preversion": "npm run test-build && git add -f index.js; git commit -m 'Update build' 2>&1 > /dev/null || :",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

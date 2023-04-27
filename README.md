@@ -1,6 +1,6 @@
 This package enforces the conventional commits are used for a github project.
 
-Usage
+# Usage
 ```yaml
 name: presubmit
 on: [push, pull_request, workflow_dispatch]
@@ -9,5 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: codehabits/conventional-commits@v0.0.1
+    - uses: diffia/conventional-commits@v0.0.5
 ```
+
+# Release new version
+Run `npm version [major|minor|patch]`
