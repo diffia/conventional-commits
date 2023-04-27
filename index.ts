@@ -26,8 +26,17 @@ async function validatePullRequest(event: PullRequestEvent) {
     validateCommits(commits)
 }
 
+function ignore(commit:Commit){
+    return commit.message.match(/merge/i)
+}
+
 function validateCommits(commits: Commit[]) {
     commits.forEach((commit) => {
+        if(ignore(commit)){
+            core.info(`🤫 Ignoring '${commit.message}'`)
+            return
+        }
+
         try {
             parser(commit.message)
             core.info(`✅ ${commit.message}`)
